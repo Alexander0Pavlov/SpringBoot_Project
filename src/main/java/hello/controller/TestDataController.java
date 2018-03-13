@@ -27,7 +27,6 @@ import java.util.*;
 import javax.validation.Valid;
 
 
-
 @Controller
 public class TestDataController {
 
@@ -35,6 +34,7 @@ public class TestDataController {
     private TestDataService testDataService;
 
 
+    
     //curl -X GET -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json; charset=UTF-8' -i 'http://localhost:8080/testdata/find/all?l=4'
     @RequestMapping(value = "/testdata/find/all", method = RequestMethod.GET,
             consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
@@ -48,6 +48,7 @@ public class TestDataController {
     }
 
 
+    
     //curl -X GET -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json; charset=UTF-8' -i 'http://localhost:8080/testdata?search=name,~,сАш,lastmodifieddate,=,2018.02.27&sort=id,asc,lastmodifieddate,asc&phone=12'
     //curl -X GET -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json; charset=UTF-8' -i 'http://localhost:8080/testdatasearch?l=30&p=1&search=name,~,ЙЁ'
     @RequestMapping(value = "/testdata", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8",
@@ -71,6 +72,7 @@ public class TestDataController {
 
         return pageReturnFormat;
     }
+
 
 
     //curl -X GET -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json; charset=UTF-8' -i 'http://localhost:8080/testdata/find/byNameAndEmail?name=СаШа&email=bCd&p=1&l=2'
@@ -118,6 +120,7 @@ public class TestDataController {
         testDataService.save(testDataSave);
         return testDataSave;
     }
+
 
     //curl -H "Content-Type: application/json" -X GET http://localhost:8080/testdata/3
     @RequestMapping(value = "/testdata/{id}", method = RequestMethod.GET)

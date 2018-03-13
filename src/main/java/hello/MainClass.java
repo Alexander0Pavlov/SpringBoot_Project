@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.context.annotation.ComponentScan;
 
+
+
 @EnableAutoConfiguration
 @ComponentScan("src.main.java.hello")
 public class MainClass {
 
     public static void main(String[] args) throws Exception {
+
         SpringApplication.run(MainClass.class, args);
-        System.out.println("Started Successfully, check http://localhost:8080/testdata \n\n\n\n");
+
     }
 
 }

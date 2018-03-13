@@ -6,6 +6,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +25,7 @@ import com.google.common.base.Throwables;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    private boolean printFullStackTrace = true;
+    private boolean printFullStackTrace = false;
 
     public GlobalExceptionHandler() {
         System.out.println(getClass() + " started");
@@ -31,7 +33,7 @@ public class GlobalExceptionHandler {
 
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND /*, reason = "Not Found"  --- убираем чтобы выкидывать json errorMessage*/)
-    @ExceptionHandler(value = {NotFoundException.class})
+    @ExceptionHandler(value = {NotFoundException.class, UsernameNotFoundException.class})
     @ResponseBody
     public ErrorMessage handleNotFoundException(HttpServletRequest req, Exception ex) {
 
@@ -86,6 +88,28 @@ public class GlobalExceptionHandler {
                 exRootCause.getStackTrace()[0].getClassName(),
                 exRootCause.getStackTrace()[0].getMethodName(),
                 req.getRequestURI(), 500, "INTERNAL_SERVER_ERROR"/*ex.getMessage()*/);
+
+        if (printFullStackTrace)
+            System.out.println(errorMessage + "\n" + Throwables.getStackTraceAsString(ex) + "\n");
+        else System.out.println(errorMessage);
+
+        return errorMessage;
+    }
+
+
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = {ForbiddenException.class,
+            AccessDeniedException.class})
+    @ResponseBody
+    public ErrorMessage handleForbiddenException(HttpServletRequest req, Exception ex) {
+
+        Throwable exRootCause = Throwables.getRootCause(ex);
+
+        ErrorMessage errorMessage = new ErrorMessage(new Timestamp(System.currentTimeMillis()),
+                ex.getClass().getName(),
+                exRootCause.getStackTrace()[0].getClassName(),
+                exRootCause.getStackTrace()[0].getMethodName(),
+                req.getRequestURI(), 403, "FORBIDDEN"/*ex.getMessage()*/);
 
         if (printFullStackTrace)
             System.out.println(errorMessage + "\n" + Throwables.getStackTraceAsString(ex) + "\n");
