@@ -5,6 +5,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.multipart.MultipartException;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,7 +27,7 @@ import com.google.common.base.Throwables;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    private boolean printFullStackTrace = false;
+    private boolean printFullStackTrace = true;
 
     public GlobalExceptionHandler() {
         System.out.println(getClass() + " started");
@@ -56,7 +58,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {BadRequestException.class, MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class, HttpRequestMethodNotSupportedException.class,
-            MissingServletRequestParameterException.class})
+            MissingServletRequestParameterException.class, HttpMediaTypeNotSupportedException.class,
+            MultipartException.class})
     @ResponseBody
     public ErrorMessage handleBadRequestException(HttpServletRequest req, Exception ex) {
 

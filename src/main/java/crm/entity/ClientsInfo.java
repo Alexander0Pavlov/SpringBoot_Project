@@ -97,7 +97,7 @@ public class ClientsInfo {
 
 
     @ManyToOne
-    @JoinColumn(name = "testdata_id")
+    @JoinColumn(name = "clients_id")
     @JsonIgnore
     public Clients getClients() {
         return this.clients;
