@@ -90,9 +90,9 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 
 /////////////^^PARSE_SORT_CRITERIA парсим массив стрингов, что приняли по REST на лист SortCriteria(класс Поле - параметр сортировки)
-    @Override
+
     @Transactional(readOnly = true)
-    public List<SortCriteria> mapSortByParamsToSortCriteriaList(List<String> fieldnamesAvaliable, String[] sortByParams)
+    private List<SortCriteria> mapSortByParamsToSortCriteriaList(List<String> fieldnamesAvaliable, String[] sortByParams)
             throws BadRequestException {
 
         if (sortByParams.length % 2 != 0) throw new BadRequestException("BAD_REQUEST");
@@ -136,9 +136,9 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 /////////////^^PARSE_SEARCH_CRITERIA парсим массив стрингов, что приняли по REST
     // на лист SearchCriteria(формат: ИмяПоля - Операция(=, like) - ЗначениеПоКоторомуИщем)
-    @Override
+
     @Transactional(readOnly = true)
-    public List<SearchCriteria> parseSearchCriteriaListByFieldnamesAndSearchParams(List<String> fieldnamesAvaliable,
+    private List<SearchCriteria> parseSearchCriteriaListByFieldnamesAndSearchParams(List<String> fieldnamesAvaliable,
                                                                                    List<String> operationsAvaliable,
                                                                                    String[] searchParams)
             throws BadRequestException {
@@ -185,8 +185,8 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 /////////////^^PARSE_SEARCH_CRITERIA
 
 /////////////^FORMAT DATE
-    @Override
-    public Date formatStringToDateYYYY_MM_DD(String dateInString) throws BadRequestException {
+
+    private Date formatStringToDateYYYY_MM_DD(String dateInString) throws BadRequestException {
         DateFormat format = new SimpleDateFormat("yyyy.MM.dd");
         Date date = new Date();
         try {
@@ -200,7 +200,7 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 
 /////////^WHERE(predicate) формируем из параметров поиска - параметр запроса WHERE predicate (дополняем predicate)
-    public Predicate predicateBySearchCriteria(CriteriaBuilder builder, Root root, Predicate predicate,
+    private Predicate predicateBySearchCriteria(CriteriaBuilder builder, Root root, Predicate predicate,
                                                List<SearchCriteria> searchCriteriaList) throws BadRequestException {
 
         for (SearchCriteria searchCriteria : searchCriteriaList) {
@@ -239,7 +239,7 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 
 ////////^ORDER_LIST Формируем orderList, что передаётся в запрос query.orderBy (javax.persistence.criteria.Order - в нём зашито поле-тип сортировки)
-    public List<Order> orderListBySortCriteriaList(CriteriaBuilder builder, Root root, List<SortCriteria> sortCriteriaList) {
+    private List<Order> orderListBySortCriteriaList(CriteriaBuilder builder, Root root, List<SortCriteria> sortCriteriaList) {
 
         List<Order> orderList = Lists.newArrayList();
 
@@ -256,7 +256,7 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 
 /////////^PAGING ~~~~~~~~~~ Разбивка на страницы  PageReturnFormat
-    public PageReturnFormat<V> pagingByQuery(EntityManager entityManager, CriteriaQuery<V> query,
+    private PageReturnFormat<V> pagingByQuery(EntityManager entityManager, CriteriaQuery<V> query,
                                              Integer page, Integer limit) throws BadRequestException {
 
         TypedQuery<V> queryToCountResults = entityManager.createQuery(query);
@@ -290,7 +290,7 @@ public class ServiceSearchImpl<V> implements ServiceSearch<V> {
 
 
 //^ADD SEARCH BY PHONE
-    public Predicate addSearchByPhoneToPredicateAndJoinTableWithPhone(CriteriaBuilder builder, Root root, Predicate predicate,
+    private Predicate addSearchByPhoneToPredicateAndJoinTableWithPhone(CriteriaBuilder builder, Root root, Predicate predicate,
                                                                       String clientsPhone) {
         Join<Clients, ClientsInfo> joinClientsInfo = null;
 

@@ -53,6 +53,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.5.10.RELEASE'
 
+    // https://mvnrepository.com/artifact/net.sourceforge.htmlcleaner/htmlcleaner
+    compile group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.21'
 
 
 

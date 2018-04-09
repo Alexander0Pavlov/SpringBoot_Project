@@ -12,7 +12,10 @@ import javax.persistence.EntityManager;
 
 import javax.persistence.criteria.Order;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 
+
+@PreAuthorize(HasRole.DBA_URW_UR)
 public interface ServiceSearch<V> {
 
 
@@ -21,24 +24,4 @@ public interface ServiceSearch<V> {
                                                List<String> fieldnamesAvaliable, Class<V> ClassV) throws BadRequestException;
 
 
-    List<SortCriteria> mapSortByParamsToSortCriteriaList(List<String> fieldnamesAvaliable, String[] sortByParams)
-            throws BadRequestException;
-
-    List<SearchCriteria> parseSearchCriteriaListByFieldnamesAndSearchParams(List<String> fieldnamesAvaliable,
-                                                                            List<String> operationsAvaliable,
-                                                                            String[] searchParams) throws BadRequestException;
-
-    Date formatStringToDateYYYY_MM_DD(String dateInString) throws BadRequestException;
-
-    Predicate predicateBySearchCriteria(CriteriaBuilder builder, Root root, Predicate predicate,
-                                        List<SearchCriteria> searchCriteriaList) throws BadRequestException;
-
-    List<Order> orderListBySortCriteriaList(CriteriaBuilder builder, Root root, List<SortCriteria> sortCriteriaList);
-
-    PageReturnFormat<V> pagingByQuery(EntityManager entityManager, CriteriaQuery<V> query,
-                                      Integer page, Integer limit) throws BadRequestException;
-
-
-    Predicate addSearchByPhoneToPredicateAndJoinTableWithPhone(CriteriaBuilder builder, Root root, Predicate predicate,
-                                                               String clientsPhone);
 }
